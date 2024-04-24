@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import { AxiosError } from "axios";
 import visitorApi from "../auth/visitorApi";
 import { PATH } from "../constants/api";

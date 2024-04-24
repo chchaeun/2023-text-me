@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import create from "zustand";
+import { create } from "zustand";
 import { Letter } from "../types";
 import api from "../auth/api";
 import visitorApi from "../auth/visitorApi";

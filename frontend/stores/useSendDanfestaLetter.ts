@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import create from "zustand";
+import { create } from "zustand";
 import visitorApi from "../auth/visitorApi";
 import { PATH } from "../constants/api";
 
