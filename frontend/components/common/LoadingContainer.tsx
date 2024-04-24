@@ -10,7 +10,7 @@ interface Props {
 function LoadingContainer({ height }: Props) {
   return (
     <DeferredComponent>
-      <Container style={{ height }}>
+      <Container>
         <Spinner />
       </Container>
     </DeferredComponent>

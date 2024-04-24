@@ -12,40 +12,40 @@ public class AesUtils {
 
     private final String secretKey = "3^mdfo9iu4alkj";
 
-    public String encryption(String text) {
+    public String encrypt(String plaintext) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
 
             byte[] key = new byte[16];
             int i = 0;
 
-            for(byte b : secretKey.getBytes()) {
-                key[i++%16] ^= b;
+            for (byte b : secretKey.getBytes()) {
+                key[i++ % 16] ^= b;
             }
 
             cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"));
 
-            return new String(Hex.encodeHex(cipher.doFinal(text.getBytes(StandardCharsets.UTF_8)))).toUpperCase();
-        } catch(Exception e) {
-            return text;
+            return new String(Hex.encodeHex(cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8)))).toUpperCase();
+        } catch (Exception e) {
+            return plaintext;
         }
     }
 
-    public String decryption(String encryptedText) {
+    public String decrypt(String encryptedText) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
 
             byte[] key = new byte[16];
             int i = 0;
 
-            for(byte b : secretKey.getBytes()) {
-                key[i++%16] ^= b;
+            for (byte b : secretKey.getBytes()) {
+                key[i++ % 16] ^= b;
             }
 
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"));
 
             return new String(cipher.doFinal(Hex.decodeHex(encryptedText.toCharArray())));
-        } catch(Exception e) {
+        } catch (Exception e) {
             return encryptedText;
         }
     }
