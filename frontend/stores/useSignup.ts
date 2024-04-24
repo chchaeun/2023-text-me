@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import create from "zustand";
+import { create } from "zustand";
 import visitorApi from "../auth/visitorApi";
 import { FieldValues } from "react-hook-form";
 import { PATH } from "../constants/api";

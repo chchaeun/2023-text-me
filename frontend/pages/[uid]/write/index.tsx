@@ -2,6 +2,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import SelectCard from "../../../components/write/SelectCard";
 import WriteLetter from "../../../components/write/WriteLetter";
+import { cardAlt } from "../../../public/static/images/card-alt";
 import { useCardPicture } from "../../../stores/useCardPicture";
 import { useRoomInfo } from "../../../stores/useRoomInfo";
 import { useSendLetter } from "../../../stores/useSendLetter";
@@ -32,7 +33,16 @@ function Write() {
   switch (process) {
     case PROCESS.SELECT:
       return (
-        <SelectCard type={"SELECT"} next={() => setProcess(PROCESS.WRITE)} />
+        <SelectCard
+          type={"SELECT"}
+          next={() => setProcess(PROCESS.WRITE)}
+          cards={Array.from({ length: 4 }, () => "/static/images/card").map(
+            (v, i) => ({
+              src: `${v}-${i + 1}.webp`,
+              alt: cardAlt[`card-${i + 1}`],
+            })
+          )}
+        />
       );
     case PROCESS.WRITE:
       return (

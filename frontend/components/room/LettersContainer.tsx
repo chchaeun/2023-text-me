@@ -8,9 +8,15 @@ import LettersMove from "./LettersMove";
 
 interface Props {
   userId: string;
+  backgroundImage: string;
+  defaultCardImage: string;
 }
 
-function LettersContainer({ userId }: Props) {
+function LettersContainer({
+  userId,
+  backgroundImage,
+  defaultCardImage,
+}: Props) {
   const PAGE_LETTER = 23;
 
   const { isCaptureMode } = useCaptureMode();
@@ -44,6 +50,9 @@ function LettersContainer({ userId }: Props) {
           pagination * PAGE_LETTER,
           pagination * PAGE_LETTER + PAGE_LETTER
         )}
+        backgroundImage={backgroundImage}
+        defaultCardImage={defaultCardImage}
+        userId={userId}
       />
     </Container>
   );
