@@ -36,7 +36,7 @@ function Room() {
     if (userId) {
       getRoomInfo(userId);
     }
-  }, [userId]);
+  }, [userId, getRoomInfo]);
 
   if (isLoading) {
     return <LoadingContainer />;
@@ -52,7 +52,7 @@ function Room() {
         <title>{roomInfo?.userName}님의 방 - Text me!</title>
       </Head>
       <Header>
-        <Title>{roomInfo?.userName}'s room</Title>
+        <Title>{roomInfo?.userName}&apos;s room</Title>
         {!isCaptureMode && <ButtonsContainer />}
       </Header>
       <LettersContainer
