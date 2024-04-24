@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import create from "zustand";
+import { create } from "zustand";
 import api from "../auth/api";
 import { refreshTokenRotation } from "../auth/refreshTokenRotation";
 import { deleteRefreshToken } from "../auth/utils";

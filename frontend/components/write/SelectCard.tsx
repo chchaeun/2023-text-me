@@ -13,18 +13,15 @@ import PreloadCardLink from "../common/PreloadCardLink";
 interface Props {
   type: "UPLOAD" | "SELECT";
   next: Function;
+  cards: { src: string; alt: string }[];
 }
 
-function SelectCard({ type, next }: Props) {
+function SelectCard({ type, next, cards }: Props) {
   const { setPictureUrl, constCard, setConstCard, setPictureImage } =
     useCardPicture();
 
   useEffect(() => {
-    return setConstCard(
-      Array.from({ length: 4 }, () => "/static/images/card").map((v, i) => {
-        return { src: `${v}-${i + 1}.webp`, alt: cardAlt[`card-${i + 1}`] };
-      })
-    );
+    setConstCard(cards);
   }, []);
 
   const fileRef = useRef<HTMLInputElement>(null);

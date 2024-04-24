@@ -33,11 +33,10 @@ interface Props {
     };
   };
   imageUrl?: string;
+  defaultImageUrl: string;
 }
 
-function BackgroundLetter({ props, imageUrl }: Props) {
-  const DEFAULT_IMAGE = "static/images/room-default.webp";
-
+function BackgroundLetter({ props, imageUrl, defaultImageUrl }: Props) {
   return (
     <g filter={props.g.filter} id={props.g.id}>
       <rect
@@ -50,7 +49,7 @@ function BackgroundLetter({ props, imageUrl }: Props) {
         fill={props.rect1.fill}
       />
       <image
-        href={imageUrl || DEFAULT_IMAGE}
+        href={imageUrl || defaultImageUrl}
         x={props.image.x}
         y={props.image.y}
         width={props.image.width}

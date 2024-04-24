@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from "axios";
+import { InternalAxiosRequestConfig } from "axios";
 import { PATH } from "../constants/api";
 import { getRefreshToken, setRefreshToken } from "./utils";
 import visitorApi from "./visitorApi";
@@ -39,8 +39,8 @@ const refreshTokenRotation = () => {
 
   return {
     setAuthHeader: async function (
-      config: AxiosRequestConfig
-    ): Promise<AxiosRequestConfig> {
+      config: InternalAxiosRequestConfig
+    ): Promise<InternalAxiosRequestConfig> {
       if (!accessToken || isExpired()) {
         await getNewTokens();
       }

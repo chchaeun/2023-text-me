@@ -10,7 +10,8 @@ function ErrorContainer({ text }: Props) {
     <Container>
       {text ? text : "존재하지 않는 페이지입니다."}
       <Link href="/">
-        <RightButton type="button">메인으로</RightButton>
+        {/* <RightButton type="button">메인으로</RightButton> */}
+        메인으로
       </Link>
     </Container>
   );

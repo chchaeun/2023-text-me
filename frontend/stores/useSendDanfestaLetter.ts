@@ -16,7 +16,7 @@ interface SendLetter {
   sendLetter: (data: LetterBody, callback: () => void) => void;
 }
 
-const useSendLetter = create<SendLetter>((set) => ({
+const useSendDanfestaLetter = create<SendLetter>((set) => ({
   loading: false,
   error: null,
   sendLetter: async (data, callback) => {
@@ -35,4 +35,4 @@ const useSendLetter = create<SendLetter>((set) => ({
   },
 }));
 
-export { useSendLetter };
+export { useSendDanfestaLetter };
