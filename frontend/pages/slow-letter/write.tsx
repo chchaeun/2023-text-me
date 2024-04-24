@@ -8,6 +8,7 @@ import { useCardPicture } from "../../stores/useCardPicture";
 import { useSendSlowLetterByAddress } from "../../stores/useSendSlowLetterByAddress";
 import { useSendSlowLetterByEmail } from "../../stores/useSendSlowLetterByEmail";
 import { useSlowLetterInfo } from "../../stores/useSlowLetterInfo";
+import { cardAlt } from "../../public/static/images/card-alt";
 const WriteLetter = dynamic(() => import("../../components/write/WriteLetter"));
 const CardRotator = dynamic(() => import("../../components/slow/CardRotator"));
 
@@ -70,7 +71,16 @@ function Write() {
   switch (process) {
     case PROCESS.SELECT:
       return (
-        <SelectCard type={"SELECT"} next={() => setProcess(PROCESS.WRITE)} />
+        <SelectCard
+          type={"SELECT"}
+          next={() => setProcess(PROCESS.WRITE)}
+          cards={Array.from({ length: 4 }, () => "/static/images/card").map(
+            (v, i) => ({
+              src: `${v}-${i + 1}.webp`,
+              alt: cardAlt[`card-${i + 1}`],
+            })
+          )}
+        />
       );
     case PROCESS.WRITE:
       return (

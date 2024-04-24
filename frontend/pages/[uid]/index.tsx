@@ -55,7 +55,11 @@ function Room() {
         <Title>{roomInfo?.userName}'s room</Title>
         {!isCaptureMode && <ButtonsContainer />}
       </Header>
-      <LettersContainer userId={userId} />
+      <LettersContainer
+        userId={userId}
+        backgroundImage={"/static/images/room-background.webp"}
+        defaultCardImage="/static/images/room-default.webp"
+      />
       <SnowFall speed={[0.5, 0.8]} wind={[-0.5, 1.0]} />
       {!isCaptureMode && (
         <Link href={`${pathname}/write`}>

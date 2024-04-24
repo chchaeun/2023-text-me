@@ -85,4 +85,24 @@ const WhiteLeftButton = styled(WhiteButton)`
   }
 `;
 
-export { LeftButton, RightButton, WhiteButton, WhiteLeftButton };
+const WhiteRightButton = styled(WhiteButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+  height: 40px;
+
+  color: #0eca92;
+  font-weight: bold;
+
+  border-radius: 10px 10px 0px 10px;
+`;
+
+export {
+  LeftButton,
+  RightButton,
+  WhiteButton,
+  WhiteLeftButton,
+  WhiteRightButton,
+};

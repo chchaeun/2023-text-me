@@ -12,11 +12,16 @@ import Head from "next/head";
 import PreloadCardLink from "../common/PreloadCardLink";
 interface Props {
   letters: Letter[];
+  backgroundImage: string;
+  defaultCardImage: string;
+  userId: string;
 }
-function Background({ letters }: Props) {
-  const { get } = useSearchParams();
-  const userId = get("uid");
-
+function Background({
+  letters,
+  backgroundImage,
+  defaultCardImage,
+  userId,
+}: Props) {
   const { open } = useLetterView();
   const { member, getMember } = useMembers();
   const { toggleAlertModalOpen, toggleEmptyLetterModalOpen } = useAlertModal();
@@ -79,7 +84,7 @@ function Background({ letters }: Props) {
           rel="preload"
           fetchpriority="high"
           as="image"
-          href="/static/images/room-background.webp"
+          href={`${backgroundImage}`}
         />
         <PreloadCardLink />
         <link
@@ -114,7 +119,11 @@ function Background({ letters }: Props) {
         />
         {LETTER_PROPS.map((p, i) => (
           <Fragment key={uuid()}>
-            <BackgroundLetter props={p} imageUrl={letters[i]?.imageUrl} />
+            <BackgroundLetter
+              props={p}
+              imageUrl={letters[i]?.imageUrl}
+              defaultImageUrl={defaultCardImage}
+            />
             {i == 20 && (
               <rect
                 x="2"
@@ -2449,7 +2458,7 @@ function Background({ letters }: Props) {
             id="image0_291_1244"
             width="4096"
             height="2216"
-            xlinkHref="/static/images/room-background.webp"
+            xlinkHref={`${backgroundImage}`}
           />
           <rect id="image1_291_1244" width="320" height="400" fill="#f4f4f4" />
           <image
