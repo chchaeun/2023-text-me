@@ -1,31 +1,29 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useAlertModal } from '../../stores/useAlertModal';
-import { Modal } from '../../styles/components/Modal';
-const LETTER_NOT_OWN_MESSAGE = '본인의 편지만 열어볼 수 있어요!';
+import React from "react";
+import styled from "styled-components";
+import { useAlertModal } from "../../stores/useAlertModal";
+import { Modal } from "../../styles/components/Modal";
 
 interface Props {
-  text: string;
+  onClick?: () => void;
 }
 
-function AlertModal({ text }: Props) {
-  const { toggleAlertModalOpen, toggleEmptyLetterModalOpen } = useAlertModal();
+function AlertModal({ onClick = () => {} }: Props) {
+  const { text, closeAlertModal } = useAlertModal();
 
-  if (text === LETTER_NOT_OWN_MESSAGE) {
-    return (
-      <Container>
-        {text}
-        <Button type="button" onClick={toggleAlertModalOpen}>
-          확인
-        </Button>
-      </Container>
-    );
+  if (!text) {
+    return <></>;
   }
 
   return (
     <Container>
       {text}
-      <Button type="button" onClick={toggleEmptyLetterModalOpen}>
+      <Button
+        type="button"
+        onClick={() => {
+          onClick();
+          closeAlertModal();
+        }}
+      >
         확인
       </Button>
     </Container>

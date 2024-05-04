@@ -24,7 +24,7 @@ function Background({
 }: Props) {
   const { open } = useLetterView();
   const { member, getMember } = useMembers();
-  const { toggleAlertModalOpen, toggleEmptyLetterModalOpen } = useAlertModal();
+  const { openAlertModal } = useAlertModal();
   const { isCaptureMode } = useCaptureMode();
 
   const [width, setWidth] = useState(0);
@@ -52,6 +52,7 @@ function Background({
   }, []);
 
   const checkAuthOpen = (e: any) => {
+    console.log(member, userId);
     const {
       target: {
         parentElement: { id },
@@ -63,7 +64,7 @@ function Background({
     }
 
     if (member === null || member?.id !== userId) {
-      toggleAlertModalOpen();
+      openAlertModal("편지를 열 수 없어요!");
       return;
     }
 
@@ -71,8 +72,7 @@ function Background({
       if (letters[Number(id)]) {
         open(letters[Number(id)].id);
       } else {
-        toggleEmptyLetterModalOpen();
-        return;
+        openAlertModal("아직 편지가 도착하지 않았어요!");
       }
     }
   };
