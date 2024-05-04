@@ -30,13 +30,12 @@ function Room() {
 
   const { roomInfo, getRoomInfo, error, isLoading } = useRoomInfo();
   const { isCaptureMode, toggleCaptureMode, modalOpen } = useCaptureMode();
-  const { alertModalOpen, alertEmptyLetterModalOpen } = useAlertModal();
 
   useEffect(() => {
     if (userId) {
       getRoomInfo(userId);
     }
-  }, [userId]);
+  }, [userId, getRoomInfo]);
 
   if (isLoading) {
     return <LoadingContainer />;
@@ -52,7 +51,7 @@ function Room() {
         <title>{roomInfo?.userName}님의 방 - Text me!</title>
       </Head>
       <Header>
-        <Title>{roomInfo?.userName}'s room</Title>
+        <Title>{roomInfo?.userName}&apos;s room</Title>
         {!isCaptureMode && <ButtonsContainer />}
       </Header>
       <LettersContainer
@@ -70,10 +69,7 @@ function Room() {
         </Link>
       )}
       <LetterViewContainer />
-      {alertModalOpen && <AlertModal text={LETTER_NOT_OWN_MESSAGE} />}
-      {alertEmptyLetterModalOpen && (
-        <AlertModal text={LETTER_NOT_ARRIVE_MESSAGE} />
-      )}
+      <AlertModal />
       {modalOpen && <SaveModal />}
       {isCaptureMode && (
         <CaptureModeButton type="button" onClick={toggleCaptureMode}>

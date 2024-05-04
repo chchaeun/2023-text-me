@@ -23,10 +23,9 @@ const LETTER_NOT_ARRIVE_MESSAGE = "아직 편지가 도착하지 않았어요!";
 function DanfestaRoom() {
   const pathname = usePathname();
 
-  const userId = "BC09E4C4E30AD99120565CA8746E6D86";
+  const userId = process.env.NEXT_PUBLIC_DKU_USERID;
 
   const { isCaptureMode, toggleCaptureMode, modalOpen } = useCaptureMode();
-  const { alertEmptyLetterModalOpen } = useAlertModal();
 
   return (
     <>
@@ -40,7 +39,7 @@ function DanfestaRoom() {
       <LettersContainer
         userId={userId}
         backgroundImage={"/static/images/danfesta-background.jpeg"}
-        defaultCardImage="/static/images/danfesta-card-default.png"
+        defaultCardImage={"/static/images/danfesta-card-default.png"}
       />
       {!isCaptureMode && (
         <Link href={`${pathname}/write`}>
@@ -48,9 +47,7 @@ function DanfestaRoom() {
         </Link>
       )}
       <LetterViewContainer />
-      {alertEmptyLetterModalOpen && (
-        <AlertModal text={LETTER_NOT_ARRIVE_MESSAGE} />
-      )}
+      <AlertModal />
       {modalOpen && <SaveModal />}
       {isCaptureMode && (
         <CaptureModeButton type="button" onClick={toggleCaptureMode}>

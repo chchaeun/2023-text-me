@@ -16,7 +16,7 @@ const PROCESS = {
   ADDRESS: "ADDRESS",
 };
 
-function getInfo() {
+function GetInfo() {
   const [process, setProcess] = useState(PROCESS.SELECT);
   const router = useRouter();
 
@@ -59,7 +59,7 @@ function getInfo() {
   }
 }
 
-export default getInfo;
+export default GetInfo;
 
 export const SelectContainer = styled.div`
   width: 100%;
