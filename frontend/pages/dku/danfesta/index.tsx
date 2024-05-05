@@ -1,24 +1,23 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useCaptureMode } from "../../../stores/useCaptureMode";
-import { useAlertModal } from "../../../stores/useAlertModal";
 import ButtonsContainer from "../../../components/room/ButtonsContainer";
 import LettersContainer from "../../../components/room/LettersContainer";
 import {
   RightButton,
   WhiteRightButton,
 } from "../../../styles/components/Button";
+import SaveModal from "../../../components/room/SaveModal";
+import { useRoomInfo } from "../../../stores/useRoomInfo";
+
 const AlertModal = dynamic(() => import("../../../components/room/AlertModal"));
 const LetterViewContainer = dynamic(
   () => import("../../../components/room/LetterViewContainer")
 );
-const SaveModal = dynamic(() => import("../../../components/room/SaveModal"));
-
-const LETTER_NOT_ARRIVE_MESSAGE = "아직 편지가 도착하지 않았어요!";
 
 function DanfestaRoom() {
   const pathname = usePathname();
@@ -26,16 +25,78 @@ function DanfestaRoom() {
   const userId = process.env.NEXT_PUBLIC_DKU_USERID;
 
   const { isCaptureMode, toggleCaptureMode, modalOpen } = useCaptureMode();
+  const { getRoomInfo } = useRoomInfo();
+  const [checkboxes, setCheckboxes] = useState({
+    women: true,
+    men: true,
+    contact: false,
+  });
+
+  useEffect(() => {
+    getRoomInfo(userId);
+  }, [userId]);
+
+  const onCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { name, checked },
+    } = e;
+    setCheckboxes({ ...checkboxes, [name]: checked });
+  };
 
   return (
     <>
       <Head>
-        <title>낭만 우편함 - Danfesta</title>
+        <title>랑데부: 만남의 우편함</title>
+        <link rel="icon" href="/static/images/danfesta-card-4.png" />
       </Head>
       <Header>
         <Logo src="/static/images/danfesta-logo.png" />
         {!isCaptureMode && <ButtonsContainer />}
       </Header>
+      {!isCaptureMode && (
+        <FilterContainer>
+          <CheckboxContainer>
+            <HiddenCheckBox
+              name="women"
+              checked={checkboxes.women}
+              onChange={onCheckboxChange}
+            />
+            <SaveIDCheckBox checked={checkboxes.women}>
+              <Icon viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12" />
+              </Icon>
+            </SaveIDCheckBox>
+            여학우 편지
+          </CheckboxContainer>
+
+          <CheckboxContainer>
+            <HiddenCheckBox
+              name="men"
+              checked={checkboxes.men}
+              onChange={onCheckboxChange}
+            />
+            <SaveIDCheckBox checked={checkboxes.men}>
+              <Icon viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12" />
+              </Icon>
+            </SaveIDCheckBox>
+            남학우 편지
+          </CheckboxContainer>
+          <CheckboxContainer>
+            <HiddenCheckBox
+              name="contact"
+              checked={checkboxes.contact}
+              onChange={onCheckboxChange}
+            />
+            <SaveIDCheckBox checked={checkboxes.contact}>
+              <Icon viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12" />
+              </Icon>
+            </SaveIDCheckBox>
+            연락처 있는 편지
+          </CheckboxContainer>
+        </FilterContainer>
+      )}
       <LettersContainer
         userId={userId}
         backgroundImage={"/static/images/danfesta-background.jpeg"}
@@ -62,7 +123,7 @@ export default DanfestaRoom;
 
 const Logo = styled.img`
   position: fixed;
-  top: 0;
+  top: -10px;
   left: 0;
 
   display: flex;
@@ -71,7 +132,7 @@ const Logo = styled.img`
   padding: 13px;
 
   width: fit-content;
-  height: 150px;
+  height: 130px;
 
   margin: 0;
   z-index: 1;
@@ -104,6 +165,67 @@ const CTAButton = styled(WhiteRightButton)`
   @media ${({ theme }) => theme.device.small} {
     font-size: 12px;
     padding: 8px 16px;
+  }
+`;
+
+const FilterContainer = styled.div`
+  position: fixed;
+  z-index: 10;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  top: 110px;
+  left: 30px;
+  font-size: 14px;
+`;
+
+const CheckboxContainer = styled.label`
+  color: white;
+  display: flex;
+  align-items: center;
+`;
+
+const HiddenCheckBox = styled.input.attrs((props) => ({
+  type: "checkbox",
+  checked: props.checked,
+  onChange: props.onChange,
+}))`
+  border: 0;
+  clip: rect(0 0 0 0);
+  clippath: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+`;
+
+const Icon = styled.svg`
+  fill: none;
+  stroke: #44332a;
+  stroke-width: 2px;
+`;
+
+const SaveIDCheckBox = styled.div<{ checked: boolean }>`
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: ${(props) => (props.checked ? "#ffef78" : "white")};
+  opacity: ${(props) => !props.checked && 0.7};
+  border-radius: 3px;
+  transition: all 100ms;
+  margin-right: 8px;
+
+  &:hover {
+    background: "brown";
+    opacity: 1;
+  }
+
+  ${Icon} {
+    visibility: ${(props) => (props.checked ? "visible" : "hidden")};
   }
 `;
 
