@@ -9,16 +9,17 @@ import ButtonsContainer from "../room/ButtonsContainer";
 import LettersContainer from "../room/LettersContainer";
 import Link from "next/link";
 import LetterViewContainer from "../room/LetterViewContainer";
-import AlertModal from "../room/AlertModal";
-import SaveModal from "../room/SaveModal";
+import { useConfirmModal } from "../../stores/useConfirmModal";
 
 const DanfestaRoom = () => {
   const pathname = usePathname();
 
   const userId = process.env.NEXT_PUBLIC_DKU_USERID;
 
-  const { isCaptureMode, toggleCaptureMode, modalOpen } = useCaptureMode();
+  const { isCaptureMode, toggleCaptureMode } = useCaptureMode();
   const { getRoomInfo } = useRoomInfo();
+  const { openConfirmModal } = useConfirmModal();
+
   const [checkboxes, setCheckboxes] = useState({
     women: true,
     men: true,
@@ -34,6 +35,16 @@ const DanfestaRoom = () => {
       target: { name, checked },
     } = e;
     setCheckboxes({ ...checkboxes, [name]: checked });
+  };
+
+  const confirmOpen = async () => {
+    // 먼저 3개 아직 다 찼는지 확인
+    const confirm = await openConfirmModal({ text: "차감됩니다." });
+    if (!confirm) {
+      return false;
+    }
+
+    return true;
   };
 
   return (
@@ -94,13 +105,7 @@ const DanfestaRoom = () => {
         userId={userId}
         backgroundImage={"/static/images/danfesta-background.jpeg"}
         defaultCardImage={"/static/images/danfesta-card-default.png"}
-        confirmOpen={() => {
-          if (!window.confirm("차감")) {
-            return false;
-          }
-
-          return true;
-        }}
+        confirmOpen={confirmOpen}
       />
       {!isCaptureMode && (
         <Link href={`${pathname}/write`}>
@@ -108,8 +113,6 @@ const DanfestaRoom = () => {
         </Link>
       )}
       <LetterViewContainer />
-      <AlertModal />
-      {modalOpen && <SaveModal />}
       {isCaptureMode && (
         <CaptureModeButton type="button" onClick={toggleCaptureMode}>
           캡처 모드 종료

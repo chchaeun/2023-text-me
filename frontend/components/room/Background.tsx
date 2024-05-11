@@ -4,6 +4,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useLetterView } from "../../stores/useLetterView";
 import { Letter } from "../../types";
 import { useAlertModal } from "../../stores/useAlertModal";
+import { useConfirmModal } from "../../stores/useConfirmModal";
 import { useCaptureMode } from "../../stores/useCaptureMode";
 import { LETTER_PROPS } from "./BackgroundLetterProps";
 import BackgroundLetter from "./BackgroundLetter";
@@ -15,23 +16,17 @@ interface Props {
   backgroundImage: string;
   defaultCardImage: string;
   userId: string;
+  openLetter: (id: string) => void;
 }
 function Background({
   letters,
   backgroundImage,
   defaultCardImage,
   userId,
+  openLetter,
 }: Props) {
-  const { open } = useLetterView();
-  const { member, getMember } = useMembers();
-  const { openAlertModal } = useAlertModal();
   const { isCaptureMode } = useCaptureMode();
-
   const [width, setWidth] = useState(0);
-
-  useEffect(() => {
-    getMember();
-  }, []);
 
   useEffect(() => {
     let newWidth = window.innerHeight * (1560 / 844);
@@ -51,8 +46,7 @@ function Background({
     });
   }, []);
 
-  const checkAuthOpen = (e: any) => {
-    console.log(member, userId);
+  const onLetterClick = async (e: any) => {
     const {
       target: {
         parentElement: { id },
@@ -63,18 +57,7 @@ function Background({
       return;
     }
 
-    if (member === null || member?.id !== userId) {
-      openAlertModal("편지를 열 수 없어요!");
-      return;
-    }
-
-    if (member.id === userId) {
-      if (letters[Number(id)]) {
-        open(letters[Number(id)].id);
-      } else {
-        openAlertModal("아직 편지가 도착하지 않았어요!");
-      }
-    }
+    openLetter(id);
   };
 
   return (
@@ -107,7 +90,7 @@ function Background({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        onClick={checkAuthOpen}
+        onClick={onLetterClick}
       >
         <rect
           id="back"

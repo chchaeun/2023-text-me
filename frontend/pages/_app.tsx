@@ -10,6 +10,8 @@ import Script from "next/script";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Head from "next/head";
+import ConfirmModal from "../common/modal/ConfirmModal";
+import AlertModal from "../common/modal/AlertModal";
 declare global {
   interface Window {
     Kakao: any;
@@ -87,6 +89,8 @@ export default function App({ Component, pageProps }: AppProps) {
                 `,
           }}
         />
+        <ConfirmModal />
+        <AlertModal />
         <Component {...pageProps} />
       </Layout>
     </ThemeProvider>
