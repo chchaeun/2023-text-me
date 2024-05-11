@@ -3,27 +3,21 @@ import DanfestaRoom from "../../../components/danfesta/Room";
 import EventDescription from "../../../components/danfesta/EventDescription";
 
 function Danfesta() {
-  const DKU_DANFESTA_PROCESS_NEVERSEE = "DKU_DANFESTA_PROCESS_NEVERSEE";
+  const isDkuUser = true;
   const [process, setProcess] = useState<"ROOM" | "DESCRIPTION">("ROOM");
 
   useEffect(() => {
-    if (localStorage.getItem(DKU_DANFESTA_PROCESS_NEVERSEE) !== "Y") {
+    if (!isDkuUser) {
       setProcess("DESCRIPTION");
     }
-  }, []);
+  }, [isDkuUser]);
 
   switch (process) {
     case "ROOM":
       return <DanfestaRoom />;
 
     case "DESCRIPTION":
-      return (
-        <EventDescription
-          unmountHandler={() => {
-            localStorage.setItem(DKU_DANFESTA_PROCESS_NEVERSEE, "Y");
-          }}
-        />
-      );
+      return <EventDescription />;
   }
 }
 
