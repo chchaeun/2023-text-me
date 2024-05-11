@@ -1,241 +1,30 @@
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { ChangeEvent, useEffect, useState } from "react";
-import styled from "styled-components";
-import Head from "next/head";
-import dynamic from "next/dynamic";
-import { useCaptureMode } from "../../../stores/useCaptureMode";
-import ButtonsContainer from "../../../components/room/ButtonsContainer";
-import LettersContainer from "../../../components/room/LettersContainer";
-import {
-  RightButton,
-  WhiteRightButton,
-} from "../../../styles/components/Button";
-import SaveModal from "../../../components/room/SaveModal";
-import { useRoomInfo } from "../../../stores/useRoomInfo";
+import { useEffect, useState } from "react";
+import DanfestaRoom from "../../../components/danfesta/Room";
+import EventDescription from "../../../components/danfesta/EventDescription";
 
-const AlertModal = dynamic(() => import("../../../components/room/AlertModal"));
-const LetterViewContainer = dynamic(
-  () => import("../../../components/room/LetterViewContainer")
-);
-
-function DanfestaRoom() {
-  const pathname = usePathname();
-
-  const userId = process.env.NEXT_PUBLIC_DKU_USERID;
-
-  const { isCaptureMode, toggleCaptureMode, modalOpen } = useCaptureMode();
-  const { getRoomInfo } = useRoomInfo();
-  const [checkboxes, setCheckboxes] = useState({
-    women: true,
-    men: true,
-    contact: false,
-  });
+function Danfesta() {
+  const DKU_DANFESTA_PROCESS_NEVERSEE = "DKU_DANFESTA_PROCESS_NEVERSEE";
+  const [process, setProcess] = useState<"ROOM" | "DESCRIPTION">("ROOM");
 
   useEffect(() => {
-    getRoomInfo(userId);
-  }, [userId]);
+    if (localStorage.getItem(DKU_DANFESTA_PROCESS_NEVERSEE) !== "Y") {
+      setProcess("DESCRIPTION");
+    }
+  }, []);
 
-  const onCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { name, checked },
-    } = e;
-    setCheckboxes({ ...checkboxes, [name]: checked });
-  };
+  switch (process) {
+    case "ROOM":
+      return <DanfestaRoom />;
 
-  return (
-    <>
-      <Head>
-        <title>랑데부: 만남의 우편함</title>
-        <link rel="icon" href="/static/images/danfesta-card-4.png" />
-      </Head>
-      <Header>
-        <Logo src="/static/images/danfesta-logo.png" />
-        {!isCaptureMode && <ButtonsContainer />}
-      </Header>
-      {!isCaptureMode && (
-        <FilterContainer>
-          <CheckboxContainer>
-            <HiddenCheckBox
-              name="women"
-              checked={checkboxes.women}
-              onChange={onCheckboxChange}
-            />
-            <SaveIDCheckBox checked={checkboxes.women}>
-              <Icon viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12" />
-              </Icon>
-            </SaveIDCheckBox>
-            여학우 편지
-          </CheckboxContainer>
-
-          <CheckboxContainer>
-            <HiddenCheckBox
-              name="men"
-              checked={checkboxes.men}
-              onChange={onCheckboxChange}
-            />
-            <SaveIDCheckBox checked={checkboxes.men}>
-              <Icon viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12" />
-              </Icon>
-            </SaveIDCheckBox>
-            남학우 편지
-          </CheckboxContainer>
-          <CheckboxContainer>
-            <HiddenCheckBox
-              name="contact"
-              checked={checkboxes.contact}
-              onChange={onCheckboxChange}
-            />
-            <SaveIDCheckBox checked={checkboxes.contact}>
-              <Icon viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12" />
-              </Icon>
-            </SaveIDCheckBox>
-            연락처 있는 편지
-          </CheckboxContainer>
-        </FilterContainer>
-      )}
-      <LettersContainer
-        userId={userId}
-        backgroundImage={"/static/images/danfesta-background.jpeg"}
-        defaultCardImage={"/static/images/danfesta-card-default.png"}
-      />
-      {!isCaptureMode && (
-        <Link href={`${pathname}/write`}>
-          <CTAButton>편지 남기기</CTAButton>
-        </Link>
-      )}
-      <LetterViewContainer />
-      <AlertModal />
-      {modalOpen && <SaveModal />}
-      {isCaptureMode && (
-        <CaptureModeButton type="button" onClick={toggleCaptureMode}>
-          캡처 모드 종료
-        </CaptureModeButton>
-      )}
-    </>
-  );
+    case "DESCRIPTION":
+      return (
+        <EventDescription
+          unmountHandler={() => {
+            localStorage.setItem(DKU_DANFESTA_PROCESS_NEVERSEE, "Y");
+          }}
+        />
+      );
+  }
 }
 
-export default DanfestaRoom;
-
-const Logo = styled.img`
-  position: fixed;
-  top: -10px;
-  left: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 13px;
-
-  width: fit-content;
-  height: 130px;
-
-  margin: 0;
-  z-index: 1;
-
-  @media ${({ theme }) => theme.device.small} {
-    padding: 13px;
-    height: 40px;
-  }
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const CTAButton = styled(WhiteRightButton)`
-  position: fixed;
-  left: 50%;
-  bottom: 8%;
-  transform: translate(-50%, -50%);
-
-  padding: 13px 24px;
-
-  box-shadow: 2px 2px 5px 1px rgba(62, 78, 82, 0.4),
-    inset -2px -2px 3px rgba(106, 106, 106, 0.25),
-    inset 2px 2px 3px rgba(255, 255, 255, 0.5);
-
-  color: navy;
-
-  @media ${({ theme }) => theme.device.small} {
-    font-size: 12px;
-    padding: 8px 16px;
-  }
-`;
-
-const FilterContainer = styled.div`
-  position: fixed;
-  z-index: 10;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  top: 110px;
-  left: 30px;
-  font-size: 14px;
-`;
-
-const CheckboxContainer = styled.label`
-  color: white;
-  display: flex;
-  align-items: center;
-`;
-
-const HiddenCheckBox = styled.input.attrs((props) => ({
-  type: "checkbox",
-  checked: props.checked,
-  onChange: props.onChange,
-}))`
-  border: 0;
-  clip: rect(0 0 0 0);
-  clippath: inset(50%);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
-`;
-
-const Icon = styled.svg`
-  fill: none;
-  stroke: #44332a;
-  stroke-width: 2px;
-`;
-
-const SaveIDCheckBox = styled.div<{ checked: boolean }>`
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  background: ${(props) => (props.checked ? "#ffef78" : "white")};
-  opacity: ${(props) => !props.checked && 0.7};
-  border-radius: 3px;
-  transition: all 100ms;
-  margin-right: 8px;
-
-  &:hover {
-    background: "brown";
-    opacity: 1;
-  }
-
-  ${Icon} {
-    visibility: ${(props) => (props.checked ? "visible" : "hidden")};
-  }
-`;
-
-const CaptureModeButton = styled(RightButton)`
-  position: fixed;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  height: 5vh;
-  margin: 10px auto;
-  border-radius: 0;
-`;
+export default Danfesta;
