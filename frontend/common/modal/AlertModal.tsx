@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useAlertModal } from "../../stores/useAlertModal";
 import { Modal } from "../../styles/components/Modal";
+import TextParser from "../TextParser";
 
 interface Props {
   onClick?: () => void;
@@ -16,7 +17,7 @@ function AlertModal({ onClick = () => {} }: Props) {
 
   return (
     <Container>
-      {text}
+      <TextParser text={text} />
       <Button
         type="button"
         onClick={() => {

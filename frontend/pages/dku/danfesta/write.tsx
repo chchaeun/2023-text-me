@@ -11,6 +11,7 @@ import Link from "next/link";
 import { LeftButton, RightButton } from "../../../styles/components/Button";
 import styled from "styled-components";
 import { useRoomInfo } from "../../../stores/useRoomInfo";
+import { UseFormRegister } from "react-hook-form";
 
 const PROCESS = {
   SELECT: "SELECT",
@@ -58,7 +59,6 @@ function DanfestaWrite() {
           sendLetter={sendLetter}
           letterData={{
             receiverId: DANFESTA_USER_ID,
-            imageUrl: pictureUrl,
           }}
           to={roomInfo?.userName}
           inputOption={(register) => {
@@ -70,7 +70,7 @@ function DanfestaWrite() {
                 </div>
                 <ContactInput
                   {...register("contact")}
-                  placeholder="이메일, 인스타그램, 카카오톡 아이디 etc."
+                  placeholder="카카오톡 오픈채팅, 이메일, 인스타그램 etc."
                 />
               </ContactLabel>
             );

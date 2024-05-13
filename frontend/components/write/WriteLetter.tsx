@@ -9,48 +9,51 @@ import { Frame } from "../../styles/components/Frame";
 import BackHeader from "../common/BackHeader";
 import PreloadCardLink from "../common/PreloadCardLink";
 
-interface Props {
-  prev: Function;
-  next: Function;
-  sendLetter: Function;
-  to: string;
-  letterData: Object;
-  inputOption?: (register: UseFormRegister<LetterForm>) => ReactNode;
-}
 type LetterFormDefault = {
   contents: string;
   senderName: string;
 };
 
-type LetterForm = {
-  [key: string]: string;
-} & LetterFormDefault;
+type LetterForm =
+  | {
+      [key: string]: string;
+    }
+  | LetterFormDefault;
+
+interface Props {
+  prev: Function;
+  next: Function;
+  sendLetter: Function;
+  to: string;
+  letterData: { [key: string]: string };
+  inputOption?: (register: UseFormRegister<LetterForm>) => ReactNode;
+}
 
 function WriteLetter({
   prev,
   next,
   sendLetter,
-  letterData,
   to,
+  letterData,
   inputOption = () => <></>,
 }: Props) {
-  const { register, handleSubmit } = useForm<LetterFormDefault>();
+  const { register, handleSubmit } = useForm<LetterForm>();
 
   const { pictureUrl } = useCardPicture();
 
-  const sendData = ({ contents, senderName, ...props }: LetterFormDefault) => {
+  const sendData = ({ contents, senderName, ...props }: LetterForm) => {
     const body = {
+      imageUrl: pictureUrl,
       contents,
       senderName,
+      ...props,
       ...letterData,
     };
-
-    console.log(props);
 
     sendLetter(body, next);
   };
 
-  const validateData = (error: FieldErrors<LetterFormDefault>) => {
+  const validateData = (error: FieldErrors<LetterForm>) => {
     if (error.contents) {
       alert(error.contents.message);
       return;

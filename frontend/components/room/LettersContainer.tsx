@@ -5,23 +5,29 @@ import { useLetterPagination } from "../../stores/useLetterPagination";
 import { useLetters } from "../../stores/useLetters";
 import Background from "./Background";
 import LettersMove from "./LettersMove";
+import { useAlertModal } from "../../stores/useAlertModal";
+import { useLetterView } from "../../stores/useLetterView";
 
 interface Props {
   userId: string;
   backgroundImage: string;
   defaultCardImage: string;
+  confirmOpen: () => Promise<boolean>;
 }
 
 function LettersContainer({
   userId,
   backgroundImage,
   defaultCardImage,
+  confirmOpen,
 }: Props) {
   const PAGE_LETTER = 23;
 
   const { isCaptureMode } = useCaptureMode();
   const { pagination, setLastPage } = useLetterPagination();
   const { error, letters, getLetters } = useLetters();
+  const { openAlertModal } = useAlertModal();
+  const { open } = useLetterView();
 
   useEffect(() => {
     if (userId) {
@@ -42,6 +48,19 @@ function LettersContainer({
     );
   }
 
+  const openLetter = async (id: string) => {
+    const result = await confirmOpen();
+    if (!result) {
+      return;
+    }
+
+    if (letters[Number(id)]) {
+      open(letters[Number(id)].id);
+    } else {
+      openAlertModal("아직 편지가 도착하지 않았어요!");
+    }
+  };
+
   return (
     <Container isCaptureMode={isCaptureMode}>
       {!isCaptureMode && letters.length > PAGE_LETTER && <LettersMove />}
@@ -53,6 +72,7 @@ function LettersContainer({
         backgroundImage={backgroundImage}
         defaultCardImage={defaultCardImage}
         userId={userId}
+        openLetter={openLetter}
       />
     </Container>
   );
