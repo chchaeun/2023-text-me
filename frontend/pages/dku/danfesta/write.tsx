@@ -11,6 +11,7 @@ import Link from "next/link";
 import { LeftButton, RightButton } from "../../../styles/components/Button";
 import styled from "styled-components";
 import { useRoomInfo } from "../../../stores/useRoomInfo";
+import { UseFormRegister } from "react-hook-form";
 
 const PROCESS = {
   SELECT: "SELECT",
@@ -19,6 +20,8 @@ const PROCESS = {
   COMPLETE: "COMPLETE",
 };
 
+const DANFESTA_USER_ID = process.env.NEXT_PUBLIC_DKU_USERID;
+
 function DanfestaWrite() {
   const [process, setProcess] = useState(PROCESS.SELECT);
 
@@ -26,10 +29,11 @@ function DanfestaWrite() {
   const { pictureUrl } = useCardPicture();
 
   const { member, getMember } = useMembers();
-  const { roomInfo } = useRoomInfo();
+  const { roomInfo, getRoomInfo } = useRoomInfo();
 
   useEffect(() => {
     getMember();
+    getRoomInfo(DANFESTA_USER_ID);
   }, []);
 
   switch (process) {
@@ -54,10 +58,23 @@ function DanfestaWrite() {
           next={() => setProcess(PROCESS.COMPLETE)}
           sendLetter={sendLetter}
           letterData={{
-            receiverId: "BC09E4C4E30AD99120565CA8746E6D86",
-            imageUrl: pictureUrl,
+            receiverId: DANFESTA_USER_ID,
           }}
           to={roomInfo?.userName}
+          inputOption={(register) => {
+            return (
+              <ContactLabel>
+                <div>
+                  {"연락처를 남겨 새로운 인연을 만들어보세요 ෆ⸒⸒⸜( ˶'ᵕ'˶)⸝"}
+                  <ContactSpan> * 선택사항</ContactSpan>
+                </div>
+                <ContactInput
+                  {...register("contact")}
+                  placeholder="카카오톡 오픈채팅, 이메일, 인스타그램 etc."
+                />
+              </ContactLabel>
+            );
+          }}
         />
       );
 
@@ -139,4 +156,24 @@ const CardImage = styled.img`
   border-radius: 10px;
 
   object-fit: cover;
+`;
+
+const ContactLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+const ContactSpan = styled.span`
+  color: gray;
+`;
+
+const ContactInput = styled.input`
+  border: solid 1px gray;
+  padding: 6px;
+  border-radius: 4px;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
 `;

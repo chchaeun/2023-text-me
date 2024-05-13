@@ -10,6 +10,8 @@ import Script from "next/script";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Head from "next/head";
+import ConfirmModal from "../common/modal/ConfirmModal";
+import AlertModal from "../common/modal/AlertModal";
 declare global {
   interface Window {
     Kakao: any;
@@ -51,7 +53,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Layout>
         <Head>
           <title>Text me!</title>
-          <meta property="og:url" content="https://t2xt.me"></meta>
+          <meta property="og:url" content="https://textme.gifterz.site"></meta>
           <meta name="author" content="GIFTERZ" />
           <meta name="description" content="추억이 담긴 편지를 작성해보세요!" />
           <meta
@@ -87,6 +89,8 @@ export default function App({ Component, pageProps }: AppProps) {
                 `,
           }}
         />
+        <ConfirmModal />
+        <AlertModal />
         <Component {...pageProps} />
       </Layout>
     </ThemeProvider>
