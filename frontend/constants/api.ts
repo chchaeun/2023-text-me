@@ -24,6 +24,13 @@ const PATH = {
   UPLOAD: {
     FILES: "/files/upload",
   },
+  DKU: {
+    LETTER: {
+      EVENT: "/letters/events",
+      GET_ONE: (id: number) => `/letters/events/${id}`,
+      REPORT: (id: number) => `/letters/events/${id}/reports`,
+    },
+  },
 };
 
 export { PATH };
