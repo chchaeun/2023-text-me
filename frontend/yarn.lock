@@ -2519,6 +2519,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/crypto-js@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "@types/crypto-js@npm:4.2.2"
+  checksum: 10c0/760a2078f36f2a3a1089ef367b0d13229876adcf4bcd6e8824d00d9e9bfad8118dc7e6a3cc66322b083535e12be3a29044ccdc9603bfb12519ff61551a3322c6
+  languageName: node
+  linkType: hard
+
 "@types/debug@npm:^4.1.7":
   version: 4.1.12
   resolution: "@types/debug@npm:4.1.12"
@@ -2612,6 +2619,13 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: 10c0/6bf5337bc447b706bb5b4431d37686aa2ea6d07cfd6f79cc31de80170d6ff9b1c7384a9c0ccbc45b3f512bae9e9f75c2e12109806a15331dc94e8a8db6dbb4ac
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.17.4":
+  version: 4.17.4
+  resolution: "@types/lodash@npm:4.17.4"
+  checksum: 10c0/0124c64cb9fe7a0f78b6777955abd05ef0d97844d49118652eae45f8fa57bfb7f5a7a9bccc0b5a84c0a6dc09631042e4590cb665acb9d58dfd5e6543c75341ec
   languageName: node
   linkType: hard
 
@@ -3827,6 +3841,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"crypto-js@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "crypto-js@npm:4.2.0"
+  checksum: 10c0/8fbdf9d56f47aea0794ab87b0eb9833baf80b01a7c5c1b0edc7faf25f662fb69ab18dc2199e2afcac54670ff0cd9607a9045a3f7a80336cccd18d77a55b9fdf0
+  languageName: node
+  linkType: hard
+
 "css-color-keywords@npm:^1.0.0":
   version: 1.0.0
   resolution: "css-color-keywords@npm:1.0.0"
@@ -3863,6 +3884,19 @@ __metadata:
   version: 1.0.8
   resolution: "damerau-levenshtein@npm:1.0.8"
   checksum: 10c0/4c2647e0f42acaee7d068756c1d396e296c3556f9c8314bac1ac63ffb236217ef0e7e58602b18bb2173deec7ec8e0cac8e27cccf8f5526666b4ff11a13ad54a3
+  languageName: node
+  linkType: hard
+
+"dankook-student-council-login@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "dankook-student-council-login@npm:1.0.2"
+  dependencies:
+    "@types/crypto-js": "npm:^4.2.2"
+    crypto-js: "npm:^4.2.0"
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  checksum: 10c0/b564175feffbf36390dead592c7df95166c756f01b702979a0c7c58bf8956f728a3709978e11cd1b00e8c3516be8e6b5cf201814fbb0f63cad5b92e14656c52f
   languageName: node
   linkType: hard
 
@@ -4937,6 +4971,7 @@ __metadata:
     "@react-three/fiber": "npm:^8.15.13"
     "@testing-library/jest-dom": "npm:^5.16.5"
     "@types/gtag.js": "npm:^0.0.12"
+    "@types/lodash": "npm:^4.17.4"
     "@types/node": "npm:^20.12.7"
     "@types/react": "npm:^18.2.79"
     "@types/react-datepicker": "npm:^4"
@@ -4948,12 +4983,14 @@ __metadata:
     babel-plugin-styled-components: "npm:^2.0.7"
     compressorjs: "npm:^1.1.1"
     cross-env: "npm:^7.0.3"
+    dankook-student-council-login: "npm:^1.0.2"
     date-fns: "npm:^2.29.3"
     eslint: "npm:8.28.0"
     eslint-config-next: "npm:13.0.5"
     eslint-config-prettier: "npm:^9.1.0"
     eslint-config-react-app: "npm:^7.0.1"
     html-to-image: "npm:^1.10.9"
+    loadash: "npm:^1.0.0"
     msw: "npm:^0.49.1"
     next: "npm:^13.5.6"
     react: "npm:18.2.0"
@@ -6075,6 +6112,13 @@ __metadata:
   version: 1.2.4
   resolution: "lines-and-columns@npm:1.2.4"
   checksum: 10c0/3da6ee62d4cd9f03f5dc90b4df2540fb85b352081bee77fe4bbcd12c9000ead7f35e0a38b8d09a9bb99b13223446dd8689ff3c4959807620726d788701a83d2d
+  languageName: node
+  linkType: hard
+
+"loadash@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "loadash@npm:1.0.0"
+  checksum: 10c0/3303320c0d0e9361f347c464559bbb7105692d4b961e9d4039960dbe5bfbd0f584de8362aa32d76ebbd52a9624c00341cb98311b652dbe1b811adc3158f17c17
   languageName: node
   linkType: hard
 
