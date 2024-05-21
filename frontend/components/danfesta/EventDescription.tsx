@@ -39,8 +39,8 @@ const EventDescription = ({ loginCallback }: Props) => {
       </TextContainer>
       <ButtonContainer>
         <DankookStudentCouncilLogin
-          clientId="xmcPataFhcAXwnYIQTej"
-          redirectUri={process.env.NEXT_PUBLIC_SERVICE_URL}
+          clientId={process.env.NEXT_PUBLIC_DKU_CLIENTID}
+          redirectUri={`${process.env.NEXT_PUBLIC_SERVICE_URL}/dku/danfesta`}
           scope="nickname"
           onSuccess={(res) => {
             const { authCode, codeVerifier } = res;
