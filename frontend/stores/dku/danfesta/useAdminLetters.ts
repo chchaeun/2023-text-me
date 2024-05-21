@@ -1,31 +1,37 @@
 import { AxiosError } from "axios";
 import { create } from "zustand";
-import api from "../../auth/api";
-import { PATH } from "../../constants/api";
+import api from "../../../auth/api";
+import { PATH } from "../../../constants/api";
 
 interface Letter {
-  id: string;
+  id: number;
   senderName: string;
   contents: string;
   imageUrl: string;
   contactInfo: string;
+  viewCount: number;
+  status: string;
 }
 
-interface MyLetters {
+interface Filter {
+  status: string | null;
+}
+
+interface Letters {
   isLoading: boolean;
   error: AxiosError | null;
   letters: Letter[];
-  getLetters: () => void;
+  getLetters: (params?: Filter) => void;
 }
 
-const useMyLetters = create<MyLetters>((set) => ({
+const useAdminLetters = create<Letters>((set) => ({
   isLoading: false,
   error: null,
   letters: [],
-  getLetters: async () => {
+  getLetters: async (params: Filter = { status: null }) => {
     set({ isLoading: true });
     await api
-      .get(PATH.DKU.LETTER.EVENT)
+      .get(PATH.DKU.LETTER.ADMIN, { params })
       .then((res) => {
         set({ letters: res.data });
       })
@@ -38,4 +44,4 @@ const useMyLetters = create<MyLetters>((set) => ({
   },
 }));
 
-export { useMyLetters };
+export { useAdminLetters };

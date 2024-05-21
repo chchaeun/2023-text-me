@@ -1,7 +1,8 @@
 import { AxiosError } from "axios";
 import { create } from "zustand";
-import api from "../../auth/api";
-import { PATH } from "../../constants/api";
+import api from "../../../auth/api";
+import { PATH } from "../../../constants/api";
+import { CustomError } from "../../../types/api";
 
 type LetterBody = {
   contents: string;
@@ -12,7 +13,7 @@ type LetterBody = {
 
 interface SendLetter {
   loading: boolean;
-  error: AxiosError | null;
+  error: AxiosError<CustomError> | null;
   sendLetter: (data: LetterBody, callback: () => void) => void;
 }
 

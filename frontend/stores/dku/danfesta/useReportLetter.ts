@@ -1,12 +1,12 @@
 import { AxiosError } from "axios";
 import { create } from "zustand";
-import api from "../../auth/api";
-import { PATH } from "../../constants/api";
+import api from "../../../auth/api";
+import { PATH } from "../../../constants/api";
 
 interface ReportLetter {
   loading: boolean;
   error: AxiosError | null;
-  reportLetter: (id: number, callback: () => void) => void;
+  reportLetter: (id: number, callback?: () => void) => void;
 }
 
 const useReportLetter = create<ReportLetter>((set) => ({

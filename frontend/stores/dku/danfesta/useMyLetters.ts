@@ -1,30 +1,33 @@
 import { AxiosError } from "axios";
 import { create } from "zustand";
-import api from "../../auth/api";
-import { PATH } from "../../constants/api";
+import api from "../../../auth/api";
+import { PATH } from "../../../constants/api";
 
-interface LetterInfo {
-  id: string;
+interface Letter {
+  id: number;
+  senderName: string;
+  contents: string;
   imageUrl: string;
+  contactInfo: string;
 }
 
-interface Letters {
+interface MyLetters {
   isLoading: boolean;
   error: AxiosError | null;
-  letterInfos: LetterInfo[];
+  letters: Letter[];
   getLetters: () => void;
 }
 
-const useLetters = create<Letters>((set) => ({
+const useMyLetters = create<MyLetters>((set) => ({
   isLoading: false,
   error: null,
-  letterInfos: [],
+  letters: [],
   getLetters: async () => {
     set({ isLoading: true });
     await api
-      .get(PATH.DKU.LETTER.EVENT)
+      .get(PATH.DKU.LETTER.MY)
       .then((res) => {
-        set({ letterInfos: res.data });
+        set({ letters: res.data, error: null });
       })
       .catch((error) => {
         set({ error });
@@ -35,4 +38,4 @@ const useLetters = create<Letters>((set) => ({
   },
 }));
 
-export { useLetters };
+export { useMyLetters };
