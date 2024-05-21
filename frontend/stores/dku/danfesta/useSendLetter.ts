@@ -1,14 +1,14 @@
 import { AxiosError } from "axios";
 import { create } from "zustand";
-import { PATH } from "../constants/api";
-import api from "../auth/api";
-import { CustomError } from "../types/api";
+import api from "../../../auth/api";
+import { PATH } from "../../../constants/api";
+import { CustomError } from "../../../types/api";
 
 type LetterBody = {
-  contactInfo: string;
   contents: string;
   senderName: string;
   imageUrl: string;
+  contactInfo: string;
 };
 
 interface SendLetter {
@@ -17,7 +17,7 @@ interface SendLetter {
   sendLetter: (data: LetterBody, callback: () => void) => void;
 }
 
-const useSendDanfestaLetter = create<SendLetter>((set) => ({
+const useSendLetter = create<SendLetter>((set) => ({
   loading: false,
   error: null,
   sendLetter: async (data, callback) => {
@@ -25,7 +25,6 @@ const useSendDanfestaLetter = create<SendLetter>((set) => ({
     await api
       .post(PATH.DKU.LETTER.EVENT, data)
       .then((res) => {
-        set({ error: null });
         callback();
       })
       .catch((error) => {
@@ -37,4 +36,4 @@ const useSendDanfestaLetter = create<SendLetter>((set) => ({
   },
 }));
 
-export { useSendDanfestaLetter };
+export { useSendLetter };

@@ -1,24 +1,39 @@
 import { usePathname } from "next/navigation";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useCaptureMode } from "../../stores/useCaptureMode";
-import { useRoomInfo } from "../../stores/useRoomInfo";
 import styled from "styled-components";
-import { RightButton, WhiteRightButton } from "../../styles/components/Button";
+import {
+  RightButton,
+  WhiteButton,
+  WhiteRightButton,
+} from "../../styles/components/Button";
 import Head from "next/head";
-import ButtonsContainer from "../room/ButtonsContainer";
 import LettersContainer from "../room/LettersContainer";
 import Link from "next/link";
 import LetterViewContainer from "../room/LetterViewContainer";
 import { useConfirmModal } from "../../stores/useConfirmModal";
+import { useLetters } from "../../stores/dku/danfesta/useLetters";
+import { useMyLetters } from "../../stores/dku/danfesta/useMyLetters";
+import { useAlertModal } from "../../stores/useAlertModal";
+import { useReportLetter } from "../../stores/dku/danfesta/useReportLetter";
+import OpenedLetterIcon from "../common/icons/OpenedLetterIcon";
+import { useLetterView } from "../../stores/dku/danfesta/useLetterView";
+
+interface QueryParams {
+  gender: "women" | "men" | null;
+  hasContact: boolean;
+}
 
 const DanfestaRoom = () => {
   const pathname = usePathname();
 
-  const userId = process.env.NEXT_PUBLIC_DKU_USERID;
-
   const { isCaptureMode, toggleCaptureMode } = useCaptureMode();
-  const { getRoomInfo } = useRoomInfo();
   const { openConfirmModal } = useConfirmModal();
+  const { openAlertModal } = useAlertModal();
+  const { letterInfos, getLetters } = useLetters();
+  const { letters, getLetters: getMyLetters } = useMyLetters();
+  const { reportLetter } = useReportLetter();
+  const { open, letter, close, error, setErrorNull } = useLetterView();
 
   const [checkboxes, setCheckboxes] = useState({
     women: true,
@@ -27,25 +42,67 @@ const DanfestaRoom = () => {
   });
 
   useEffect(() => {
-    getRoomInfo(userId);
-  }, [userId]);
+    getMyLetters();
+  }, []);
+
+  useEffect(() => {
+    const query: QueryParams = {
+      gender: null,
+      hasContact: false,
+    };
+    if (checkboxes.women && checkboxes.men) {
+      query.gender = null;
+    } else if (checkboxes.women) {
+      query.gender = "women";
+    } else if (checkboxes.men) {
+      query.gender = "men";
+    }
+
+    query.hasContact = checkboxes.contact;
+
+    getLetters(query);
+  }, [checkboxes, getLetters]);
+
+  useEffect(() => {
+    if (error) {
+      openAlertModal(error.response.data.message);
+      setErrorNull();
+    }
+  }, [error]);
 
   const onCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, checked },
     } = e;
+
+    if (!checkboxes.women && name === "men" && !checked) {
+      return;
+    }
+    if (!checkboxes.men && name === "women" && !checked) {
+      return;
+    }
+
     setCheckboxes({ ...checkboxes, [name]: checked });
   };
 
   const confirmOpen = async () => {
+    const currentRemaining = 3 - letters.length;
 
-    // 먼저 3개 아직 다 찼는지 확인
-    const confirm = await openConfirmModal({ content: "편지를 열면 열 수 있는 편지 개수가 차감돼요. 열람하시겠어요?\n(현재 열람 가능 편지 수: 3)", 
-      yesButtonText: "열기"
-     });
+    if (currentRemaining === 0) {
+      openAlertModal("편지 열람 한도를 초과했어요.");
+      return;
+    }
+
+    const confirm = await openConfirmModal({
+      content: `편지를 열면 열 수 있는 편지 개수가 차감돼요. 열람하시겠어요?\n(현재 열람 가능 편지 수: ${currentRemaining})`,
+      yesButtonText: "열기",
+    });
+
     if (!confirm) {
       return false;
     }
+
+    getMyLetters();
 
     return true;
   };
@@ -58,7 +115,15 @@ const DanfestaRoom = () => {
       </Head>
       <Header>
         <Logo src="/static/images/danfesta-logo.png" />
-        {!isCaptureMode && <ButtonsContainer />}
+        {!isCaptureMode && (
+          <ButtonContainer>
+            <Link href="/dku/danfesta/my-letter">
+              <WhiteButton type="button">
+                <OpenedLetterIcon />
+              </WhiteButton>
+            </Link>
+          </ButtonContainer>
+        )}
       </Header>
       {!isCaptureMode && (
         <FilterContainer>
@@ -105,17 +170,22 @@ const DanfestaRoom = () => {
         </FilterContainer>
       )}
       <LettersContainer
-        userId={userId}
+        letters={letterInfos.filter((letter) => !letter.mine)}
         backgroundImage={"/static/images/danfesta-background.jpeg"}
         defaultCardImage={"/static/images/danfesta-card-default.png"}
         confirmOpen={confirmOpen}
+        open={open}
       />
       {!isCaptureMode && (
         <Link href={`${pathname}/write`}>
           <CTAButton>편지 남기기</CTAButton>
         </Link>
       )}
-      <LetterViewContainer />
+      <LetterViewContainer
+        reportLetter={reportLetter}
+        letter={letter ? { ...letter, receiverName: "익명의 학우" } : null}
+        close={close}
+      />
       {isCaptureMode && (
         <CaptureModeButton type="button" onClick={toggleCaptureMode}>
           캡처 모드 종료
@@ -251,4 +321,17 @@ const Button = styled.button`
   background: #ffffff;
   border: none;
   border-radius: 5px;
+`;
+
+const ButtonContainer = styled.div`
+  position: fixed;
+  top: 32px;
+  right: 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+
+  z-index: 10;
 `;

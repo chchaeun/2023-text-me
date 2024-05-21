@@ -3,19 +3,31 @@ import BackgroundTemplate from "../slow/BackgroundTemplate";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
 import TextParser from "../../common/TextParser";
+import { useLogin } from "../../stores/dku/useLogin";
+import { useRouter } from "next/router";
+import { useLetters } from "../../stores/dku/danfesta/useLetters";
 
-// const DankookStudentCouncilLogin = dynamic(
-//   () => import("dankook-student-council-login"),
-//   {
-//     ssr: false,
-//   }
-// );
-const EventDescription = () => {
+const DankookStudentCouncilLogin = dynamic(
+  () => import("dankook-student-council-login"),
+  {
+    ssr: false,
+  }
+);
+
+interface Props {
+  loginCallback: () => void;
+}
+
+const EventDescription = ({ loginCallback }: Props) => {
+  const { getToken } = useLogin();
+  const router = useRouter();
+  const { getLetters } = useLetters();
   return (
     <>
-      <BackgroundTemplate imageUrl={"/static/images/danfesta-background.jpeg"}>
-      </BackgroundTemplate>
-        <TextContainer>
+      <BackgroundTemplate
+        imageUrl={"/static/images/danfesta-background.jpeg"}
+      ></BackgroundTemplate>
+      <TextContainer>
         <Head>랑데부: 만남의 우편함</Head>
         <Sub>
           <TextParser
@@ -26,18 +38,26 @@ const EventDescription = () => {
         </Sub>
       </TextContainer>
       <ButtonContainer>
-        [ 이벤트 오픈 전입니다. ]
-        {/* <DankookStudentCouncilLogin
-          clientId="dku-text-me"
+        <DankookStudentCouncilLogin
+          clientId="xmcPataFhcAXwnYIQTej"
+          redirectUri="http:///dku/danfesta"
+          scope="nickname"
           onSuccess={(res) => {
-            console.log(res);
+            const { authCode, codeVerifier } = res;
+            getToken(
+              {
+                authCode,
+                codeVerifier,
+              },
+              () => {
+                getLetters(null, loginCallback);
+                router.push("/dku/danfesta");
+              }
+            );
           }}
-          onError={(err) => {
-            console.log(err);
-          }}
-        /> */}
+        />
       </ButtonContainer>
-      </>
+    </>
   );
 };
 
@@ -56,7 +76,7 @@ const Head = styled.p`
   font-size: 30px;
   font-weight: 600;
   text-align: center;
-  font-family: "HeirofLight"
+  font-family: "HeirofLight";
 `;
 
 const Sub = styled.p`

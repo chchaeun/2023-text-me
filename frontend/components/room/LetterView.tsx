@@ -1,32 +1,17 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useLetterView } from "../../stores/useLetterView";
+import React, { Fragment, useState } from "react";
 import ReactCardFlip from "react-card-flip";
-import { useRoomInfo } from "../../stores/useRoomInfo";
 import styled from "styled-components";
-import { Spinner } from "../../styles/indicators/Loader";
-import DeferredComponent from "../common/DeferredComponent";
 import uuid from "react-uuid";
 import Image from "next/image";
+import { Letter } from "../../types";
+import { Overlay } from "../../styles/components/Modal";
 
-function LetterView() {
-  const {
-    letter,
-    getLetter,
-    isOpened,
-    isLoading: isLetterLoading,
-    error: letterError,
-  } = useLetterView();
+interface Props {
+  letter: Letter;
+  close: () => void;
+}
 
-  useEffect(() => {
-    getLetter();
-  }, []);
-
-  const {
-    roomInfo,
-    isLoading: isRoomLoading,
-    error: roomError,
-  } = useRoomInfo();
-
+function LetterView({ letter, close }: Props) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const flip = () => {
@@ -46,42 +31,45 @@ function LetterView() {
     );
   };
 
-  if (isLetterLoading || isRoomLoading) {
-    return (
-      <DeferredComponent>
-        <Spinner />
-      </DeferredComponent>
-    );
-  }
-
-  if (letterError || roomError) {
-    return <div>편지 불러오기에 실패했습니다.</div>;
+  if (!letter) {
+    return <></>;
   }
 
   return (
-    <Container>
-      <ReactCardFlip
-        isFlipped={isFlipped}
-        flipDirection="horizontal"
-        flipSpeedBackToFront={1}
-        flipSpeedFrontToBack={1}
-      >
-        <Card>
-          <Image
-            src={letter?.imageUrl}
-            onClick={flip}
-            alt="크리스마스 카드"
-            width={272}
-            height={272}
-          />
-        </Card>
-        <CardBack imgUrl={letter?.imageUrl} onClick={flip}>
-          <ToText>To. {roomInfo?.userName}</ToText>
-          <Content>{lineBreak(letter?.contents)}</Content>
-          <FromText>From. {letter?.senderName}</FromText>
-        </CardBack>
-      </ReactCardFlip>
-    </Container>
+    <>
+      <Overlay onClick={close} />
+      <Container>
+        <ReactCardFlip
+          isFlipped={isFlipped}
+          flipDirection="horizontal"
+          flipSpeedBackToFront={1}
+          flipSpeedFrontToBack={1}
+        >
+          <Card>
+            <Image
+              src={letter?.imageUrl}
+              onClick={flip}
+              alt="카드 이미지"
+              width={272}
+              height={272}
+            />
+          </Card>
+          <CardBack imgUrl={letter?.imageUrl} onClick={flip}>
+            <ToText>To. {letter.receiverName}</ToText>
+            <Content>
+              {lineBreak(
+                letter?.contents +
+                  `${
+                    letter.contactInfo &&
+                    `\n\n•:‧• 연락처 •:‧•\n${letter.contactInfo}`
+                  }`
+              )}
+            </Content>
+            <FromText>From. {letter?.senderName}</FromText>
+          </CardBack>
+        </ReactCardFlip>
+      </Container>
+    </>
   );
 }
 
@@ -92,6 +80,7 @@ const Container = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 30;
 `;
 
 const Card = styled.div`
