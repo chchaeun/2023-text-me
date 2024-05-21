@@ -49,6 +49,7 @@ function WriteLetter({
       ...props,
       ...letterData,
     };
+    console.log(body);
 
     sendLetter(body, next);
   };
