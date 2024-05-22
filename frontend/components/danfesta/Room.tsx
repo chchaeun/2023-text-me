@@ -18,6 +18,7 @@ import { useAlertModal } from "../../stores/useAlertModal";
 import { useReportLetter } from "../../stores/dku/danfesta/useReportLetter";
 import OpenedLetterIcon from "../common/icons/OpenedLetterIcon";
 import { useLetterView } from "../../stores/dku/danfesta/useLetterView";
+import { LetterInfo } from "../../types";
 
 interface QueryParams {
   gender: "women" | "men" | null;
@@ -46,6 +47,10 @@ const DanfestaRoom = () => {
   }, []);
 
   useEffect(() => {
+    shuffle(letterInfos);
+  }, [letterInfos]);
+
+  useEffect(() => {
     const query: QueryParams = {
       gender: null,
       hasContact: false,
@@ -69,6 +74,13 @@ const DanfestaRoom = () => {
       setErrorNull();
     }
   }, [error]);
+
+  const shuffle = (array: LetterInfo[]) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  };
 
   const onCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     const {
