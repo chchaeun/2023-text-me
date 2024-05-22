@@ -21,6 +21,10 @@ function Danfesta() {
     <>
       <Head>
         <meta
+          property="og:url"
+          content="https://textme.gifterz.site/dku/danfesta"
+        />
+        <meta
           property="og:image"
           content="static/images/danfesta.background.png"
         />
