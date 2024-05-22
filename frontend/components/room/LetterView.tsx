@@ -30,8 +30,8 @@ function LetterView({ letter, close }: Props) {
                 ) : (
                   <Image
                     src={v}
-                    width={50}
-                    height={50}
+                    width={250}
+                    height={250}
                     alt={"기프티콘"}
                     style={{ width: "250px", display: "block" }}
                   />

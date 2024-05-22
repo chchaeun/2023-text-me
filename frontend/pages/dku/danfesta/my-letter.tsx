@@ -9,14 +9,21 @@ import { WhiteButton } from "../../../styles/components/Button";
 import { useMyLetters } from "../../../stores/dku/danfesta/useMyLetters";
 import PostBoxIcon from "../../../components/common/icons/PostBoxIcon";
 import { useLetterView } from "../../../stores/dku/danfesta/useLetterView";
+import { useRouter } from "next/router";
 
 const MyLetter = () => {
   const { letter, close, setLetter } = useLetterView();
-  const { letters, getLetters } = useMyLetters();
-
+  const { letters, getLetters, error } = useMyLetters();
+  const router = useRouter();
   useEffect(() => {
     getLetters();
   }, []);
+
+  useEffect(() => {
+    if (error) {
+      router.push("/dku/danfesta");
+    }
+  }, [error]);
 
   return (
     <>

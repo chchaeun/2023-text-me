@@ -27,13 +27,13 @@ const useMyLetters = create<MyLetters>((set) => ({
     await api
       .get(PATH.DKU.LETTER.MY)
       .then((res) => {
-        set({ letters: res.data, error: null });
+        set({ letters: res.data });
       })
       .catch((error) => {
         set({ error });
       })
       .finally(() => {
-        set({ isLoading: false });
+        set({ isLoading: false, error: null });
       });
   },
 }));
