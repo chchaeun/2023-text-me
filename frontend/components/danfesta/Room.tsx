@@ -114,7 +114,9 @@ const DanfestaRoom = () => {
         <link rel="icon" href="/static/images/danfesta-card-4.png" />
       </Head>
       <Header>
-        <Logo src="/static/images/danfesta-logo.png" />
+        <div>
+          <Logo src="/static/images/danfesta-logo.png" />
+        </div>
         {!isCaptureMode && (
           <ButtonContainer>
             <Link href="/dku/danfesta/my-letter">
@@ -198,6 +200,7 @@ const DanfestaRoom = () => {
 export default DanfestaRoom;
 
 const Logo = styled.img`
+  width: 180px;
   position: fixed;
   top: -10px;
   left: 0;
