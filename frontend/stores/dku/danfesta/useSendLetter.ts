@@ -31,7 +31,7 @@ const useSendLetter = create<SendLetter>((set) => ({
         set({ error });
       })
       .finally(() => {
-        set({ loading: false });
+        set({ loading: false, error: null });
       });
   },
 }));

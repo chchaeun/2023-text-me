@@ -36,12 +36,10 @@ const useLetters = create<Letters>((set) => ({
       .then((res) => {
         set({ letterInfos: res.data, error: null });
         onSuccess && onSuccess();
-        console.log("성공");
       })
       .catch((error) => {
         set({ error });
         onError && onError(error);
-        console.log(error);
       })
       .finally(() => {
         set({ isLoading: false });

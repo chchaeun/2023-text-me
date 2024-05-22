@@ -2727,10 +2727,10 @@ damerau-levenshtein@^1.0.8:
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.8.tgz#b43d286ccbd36bc5b2f7ed41caf2d0aba1f8a6e7"
   integrity sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==
 
-dankook-student-council-login@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/dankook-student-council-login/-/dankook-student-council-login-1.0.4.tgz#0256ec12088afd31721152ea1c7fa0902e058310"
-  integrity sha512-bm9g8oXdpgASfn5WMsP4mt6YR43vQWA0M3w6cGTlcg6u0k6C/Ajrrr3KdPwLDa83gvF1dogCkOCHVm/CYvIkiQ==
+dankook-student-council-login@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/dankook-student-council-login/-/dankook-student-council-login-1.0.5.tgz#3912b8cc73f8a7e26fd7314b20379f9f1eed70ff"
+  integrity sha512-Iim5LR7p74hY8+T1Fj5E9SgKtSlb3EtCNtoeXBis2i6AEvsQqaRcQBPWYPRvDMc6DmYe2vrJDJuIOpdZn5Ebeg==
   dependencies:
     "@types/crypto-js" "^4.2.2"
     crypto-js "^4.2.0"

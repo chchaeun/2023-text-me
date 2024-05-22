@@ -23,7 +23,21 @@ function LetterView({ letter, close }: Props) {
       <>
         {content?.split("\n").map((value) => (
           <Fragment key={uuid()}>
-            {value}
+            {value.split("[img]").map((v, i) => (
+              <Fragment key={i}>
+                {i === 0 ? (
+                  <>{v}</>
+                ) : (
+                  <Image
+                    src={v}
+                    width={50}
+                    height={50}
+                    alt={"기프티콘"}
+                    style={{ width: "250px", display: "block" }}
+                  />
+                )}
+              </Fragment>
+            ))}
             <br />
           </Fragment>
         ))}
@@ -60,8 +74,9 @@ function LetterView({ letter, close }: Props) {
               {lineBreak(
                 letter?.contents +
                   `${
-                    letter.contactInfo &&
-                    `\n\n•:‧• 연락처 •:‧•\n${letter.contactInfo}`
+                    letter.contactInfo
+                      ? `\n\n•:‧• 연락처 •:‧•\n${letter.contactInfo}`
+                      : ""
                   }`
               )}
             </Content>

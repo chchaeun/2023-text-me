@@ -28,7 +28,6 @@ function DanfestaWrite() {
   const { openAlertModal } = useAlertModal();
   const router = useRouter();
   useEffect(() => {
-    console.log(error);
     error &&
       openAlertModal(error.response.data.message, () =>
         router.push("/dku/danfesta")
@@ -66,7 +65,7 @@ function DanfestaWrite() {
                   <ContactSpan> * 선택사항</ContactSpan>
                 </div>
                 <ContactInput
-                  {...register("contact")}
+                  {...register("contactInfo")}
                   placeholder="카카오톡 오픈채팅, 이메일, 인스타그램 etc."
                 />
               </ContactLabel>
