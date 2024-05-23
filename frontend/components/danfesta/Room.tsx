@@ -114,8 +114,6 @@ const DanfestaRoom = () => {
       return false;
     }
 
-    getMyLetters();
-
     return true;
   };
 
@@ -196,7 +194,10 @@ const DanfestaRoom = () => {
       <LetterViewContainer
         reportLetter={reportLetter}
         letter={letter ? { ...letter, receiverName: "익명의 학우" } : null}
-        close={close}
+        close={() => {
+          close();
+          getMyLetters();
+        }}
       />
       {isCaptureMode && (
         <CaptureModeButton type="button" onClick={toggleCaptureMode}>
