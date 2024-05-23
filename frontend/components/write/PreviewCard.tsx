@@ -32,7 +32,7 @@ function PreviewCard({ prev, next }: Props) {
       </Head>
       <BackHeader onBackClick={prev}>
         <Title>카드 미리보기</Title>
-        <Button onClick={next} Style={WhiteRightSquare}>
+        <Button props={{ onClick: next }} Style={WhiteRightSquare}>
           선택
         </Button>
       </BackHeader>

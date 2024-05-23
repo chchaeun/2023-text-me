@@ -65,9 +65,9 @@ function LetterView({ letter, close }: Props) {
             <ButtonContainer>
               <Button
                 Style={WhiteRightButton}
-                onClick={() =>
+                props={{onClick:() =>
                   navigator.clipboard.writeText(letter.contactInfo)
-                }
+                }}
               >
                 연락처 복사하기
               </Button>
