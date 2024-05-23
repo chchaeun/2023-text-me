@@ -1,10 +1,14 @@
 import React, { Fragment, useState } from "react";
-import ReactCardFlip from "react-card-flip";
 import styled from "styled-components";
 import uuid from "react-uuid";
 import Image from "next/image";
 import { Letter } from "../../types";
 import { Overlay } from "../../styles/components/Modal";
+import Button from "../../common/button/Button";
+import {
+  WhiteLeftButton,
+  WhiteRightButton,
+} from "../../styles/components/Button";
 
 interface Props {
   letter: Letter;
@@ -12,12 +16,6 @@ interface Props {
 }
 
 function LetterView({ letter, close }: Props) {
-  const [isFlipped, setIsFlipped] = useState(false);
-
-  const flip = () => {
-    setIsFlipped((prev) => !prev);
-  };
-
   const lineBreak = (content: string) => {
     return (
       <>
@@ -52,57 +50,43 @@ function LetterView({ letter, close }: Props) {
   return (
     <>
       <Overlay onClick={close} />
-      <Container>
-        <ReactCardFlip
-          isFlipped={isFlipped}
-          flipDirection="horizontal"
-          flipSpeedBackToFront={1}
-          flipSpeedFrontToBack={1}
-        >
-          <Card>
-            <Image
-              src={letter?.imageUrl}
-              onClick={flip}
-              alt="카드 이미지"
-              width={272}
-              height={272}
-            />
-          </Card>
-          <CardBack imgUrl={letter?.imageUrl} onClick={flip}>
-            <ToText>To. {letter.receiverName}</ToText>
-            <Content>
-              {lineBreak(
-                letter?.contents +
-                  `${
-                    letter.contactInfo
-                      ? `\n\n•:‧• 연락처 •:‧•\n${letter.contactInfo}`
-                      : ""
-                  }`
-              )}
-            </Content>
-            <FromText>From. {letter?.senderName}</FromText>
-          </CardBack>
-        </ReactCardFlip>
-      </Container>
+      <Card imgUrl={letter?.imageUrl}>
+        <ToText>To. {letter.receiverName}</ToText>
+        <Content>
+          {lineBreak(
+            letter?.contents +
+              `${
+                letter.contactInfo
+                  ? `\n\n•:‧• 연락처 •:‧•\n${letter.contactInfo}`
+                  : ""
+              }`
+          )}
+          {letter.contactInfo && (
+            <ButtonContainer>
+              <Button
+                Style={WhiteRightButton}
+                onClick={() =>
+                  navigator.clipboard.writeText(letter.contactInfo)
+                }
+              >
+                연락처 복사하기
+              </Button>
+            </ButtonContainer>
+          )}
+        </Content>
+        <FromText>From. {letter?.senderName}</FromText>
+      </Card>
     </>
   );
 }
 
 export default LetterView;
 
-const Container = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 30;
-`;
-
-const Card = styled.div`
+const Card = styled.div<{ imgUrl: string }>`
+  position: relative;
   padding: 24px 24px 48px 24px;
   width: 320px;
   height: 400px;
-
   box-shadow: 1px 1px 8px 3px rgba(62, 78, 82, 0.4),
     inset -2px -2px 2px rgba(106, 106, 106, 0.25),
     inset 2px 2px 2px rgba(255, 255, 255, 0.3);
@@ -110,25 +94,12 @@ const Card = styled.div`
 
   background-color: #ffffff;
 
-  img {
-    width: 272px;
-    height: 272px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 30;
 
-    object-fit: cover;
-    border-radius: 5px;
-  }
-
-  @media ${({ theme }) => theme.device.small} {
-    width: 240px;
-
-    img {
-      width: 190px;
-      height: 190px;
-    }
-  }
-`;
-
-const CardBack = styled(Card)<{ imgUrl: string }>`
   display: grid;
   grid-template-rows: 80px 230px 80px;
   padding: 0;
@@ -144,9 +115,13 @@ const CardBack = styled(Card)<{ imgUrl: string }>`
   border-radius: 5px;
 
   font-family: "UhBeeMiMi";
+
+  @media ${({ theme }) => theme.device.small} {
+    width: 240px;
+  }
 `;
 
-const ToText = styled.h2`
+const ToText = styled.div`
   display: flex;
   align-items: center;
 
@@ -164,7 +139,7 @@ const ToText = styled.h2`
 `;
 
 const Content = styled.p`
-  margin: 0 37px;
+  margin: 0 30px;
 
   font-style: normal;
   font-weight: 400;
@@ -176,7 +151,7 @@ const Content = styled.p`
   overflow-y: scroll;
 `;
 
-const FromText = styled.h2`
+const FromText = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -191,5 +166,14 @@ const FromText = styled.h2`
 
   @media ${({ theme }) => theme.device.small} {
     font-size: 18px;
+  }
+`;
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+
+  button {
+    width: 100%;
   }
 `;
