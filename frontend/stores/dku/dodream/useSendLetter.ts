@@ -17,6 +17,7 @@ type LetterBody = {
     | "ETC";
   webInfoImage: FileList;
   studentCouncilFeeImage: FileList;
+  phone: string;
 };
 
 interface SendLetter {
@@ -31,10 +32,15 @@ const useSendLetter = create<SendLetter>((set) => ({
   sendLetter: async (data, callback) => {
     const formData = new FormData();
     formData.append("contents", data.contents);
-    formData.append("images", data.webInfoImage[0]);
-    formData.append("images", data.studentCouncilFeeImage[0]);
+    formData.append("webInfoImage", data.webInfoImage[0]);
+    if (data.studentCouncilFeeImage.length > 0) {
+      formData.append("paymentImage", data.studentCouncilFeeImage[0]);
+    } else {
+      formData.append("paymentImage", new File([""], ""));
+    }
     formData.append("cardImageUrl", data.imageUrl);
     formData.append("category", data.category);
+    formData.append("phone", data.phone);
 
     set({ loading: true });
     await api
