@@ -18,7 +18,7 @@ const DoDreamRoom = () => {
   return (
     <>
       <Head>
-        <title>랑데부: 만남의 우편함</title>
+        <title>함께 참여하는 학교 개선 - Do Dream</title>
         <link rel="icon" href="/static/images/danfesta-card-4.png" />
       </Head>
       <LettersContainer
