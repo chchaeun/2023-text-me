@@ -3,7 +3,6 @@ import SelectCard from "../../../components/write/SelectCard";
 import WriteLetter from "../../../components/write/WriteLetter";
 import { cardAlt } from "../../../public/static/images/card-alt";
 import { useCardPicture } from "../../../stores/useCardPicture";
-import { useSendDanfestaLetter } from "../../../stores/useSendDanfestaLetter";
 import { Frame } from "../../../styles/components/Frame";
 import Head from "next/head";
 import Link from "next/link";
@@ -14,7 +13,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { color, corner } from "../../../common/button/ButtonStyle";
 import { useSendLetter } from "../../../stores/dku/dodream/useSendLetter";
-import { useForm } from "react-hook-form";
+import { Input } from "../../../styles/components/Form";
 
 const PROCESS = {
   SELECT: "SELECT",
@@ -27,9 +26,6 @@ function DoDreamWrite() {
   const [process, setProcess] = useState(PROCESS.SELECT);
   const [웹정보Image, set웹정보Image] = useState<string>();
   const [학생회비납부내역Image, set학생회비납부내역Image] = useState<string>();
-
-  const webInfoRef = useRef<HTMLInputElement>();
-  const studentCouncilRef = useRef<HTMLInputElement>();
 
   const { sendLetter, error } = useSendLetter();
   const { pictureUrl } = useCardPicture();
@@ -128,6 +124,8 @@ function DoDreamWrite() {
                     alt={"웹정보 이미지 미리보기"}
                   />
                 )}
+                * 이벤트 참여를 원하시는 경우, 학생회비 납부내역과 전화번호를
+                등록해주세요.
                 <ImageInputLabel role="button">
                   학생회비 납부내역 등록 (선택)
                   <ImageInput
@@ -139,7 +137,6 @@ function DoDreamWrite() {
                     })}
                   />
                 </ImageInputLabel>
-
                 {학생회비납부내역Image && (
                   <Image
                     src={학생회비납부내역Image}
@@ -148,6 +145,10 @@ function DoDreamWrite() {
                     alt={"학생회비 납부내역 이미지 미리보기"}
                   />
                 )}
+                <Label>
+                  전화번호 (선택)
+                  <Input {...register("phone")} />
+                </Label>
               </Inputs>
             );
           }}
