@@ -45,7 +45,10 @@ const DoDream = () => {
           property="og:description"
           content="따뜻한 편지 한 통으로 소중한 인연을 만들어보세요!"
         />
-        <meta property="og:title" content="랑데부: 만남의 우편함" />
+        <meta
+          property="og:title"
+          content="함께 참여하는 학교 개선 - Do Dream"
+        />
       </Head>
 
       {(() => {
