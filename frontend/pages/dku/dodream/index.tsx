@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import EventDescription from "../../../components/dodream/EventDescription";
 import DoDreamRoom from "../../../components/dodream/Room";
 import { useLetters } from "../../../stores/dku/dodream/useLetters";
+import EventEnd from "../../../components/dodream/EventEnd";
 
 const DoDream = () => {
   const errorRef = useRef<any>();
@@ -11,6 +12,14 @@ const DoDream = () => {
   const { error, getLetters } = useLetters();
 
   useEffect(() => {
+    const end = new Date("2024/06/30 23:59");
+    const now = new Date();
+
+    if (end < now) {
+      setProcess("END");
+      return;
+    }
+
     errorRef.current = error;
 
     if (error) {
@@ -59,6 +68,8 @@ const DoDream = () => {
           case "DESCRIPTION":
             return <EventDescription />;
 
+          case "END":
+            return <EventEnd />;
           default:
             return <></>;
         }
